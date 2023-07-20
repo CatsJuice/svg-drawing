@@ -11,8 +11,9 @@ import {
 
 export default defineConfig({
   shortcuts: [
-    ['btn', 'px-4 py-1 rounded inline-block bg-teal-700 text-white cursor-pointer !outline-none hover:bg-teal-800 disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50'],
-    ['icon-btn', 'inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600'],
+    ['full', 'w-full h-full'],
+    ['flex-center', 'flex items-center justify-center'],
+    ['btn', 'rounded-2 px-4 py-2 bg-blue-500 text-white hover:bg-blue-600'],
   ],
   presets: [
     presetUno(),
@@ -20,6 +21,7 @@ export default defineConfig({
     presetIcons({
       scale: 1.2,
       warn: true,
+      autoInstall: true,
     }),
     presetTypography(),
     presetWebFonts({

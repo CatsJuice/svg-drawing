@@ -188,6 +188,9 @@ useEventListener('mouseup', onMouseup)
 useEventListener('touchmove', onTouchMove)
 useEventListener('touchend', onTouchEnd)
 
+if (props.initialLines?.length)
+  submitSvg()
+
 defineExpose({
   getSvg,
   onClear,

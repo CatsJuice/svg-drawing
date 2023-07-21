@@ -3,6 +3,8 @@ import { Pane } from 'tweakpane'
 import { download, svgCode2Url } from '../utils/helper'
 import type { BrushOptions, DrawOptions, SvgReplayOptions } from '../types/svg'
 
+const SvgCanvas = defineAsyncComponent(() => import('../components/SvgCanvas.vue'))
+
 const { width, height } = useCanvas()
 const svg = ref('')
 const svgRef = ref()
@@ -77,15 +79,17 @@ onMounted(() => {
     </teleport>
     <ResizePan v-model:width="width" v-model:height="height">
       <Card relative cursor-none>
-        <SvgCanvas
-          ref="svgRef"
-          :draw-options="drawOptions"
-          :replay-options="replayOptions"
-          :brush-options="finalBrushOptions"
-          :width="width"
-          :height="height"
-          @update="svg = $event"
-        />
+        <ClientOnly>
+          <SvgCanvas
+            ref="svgRef"
+            :draw-options="drawOptions"
+            :replay-options="replayOptions"
+            :brush-options="finalBrushOptions"
+            :width="width"
+            :height="height"
+            @update="svg = $event"
+          />
+        </ClientOnly>
         <PenCursor class="!absolute" top-0 />
       </Card>
     </ResizePan>

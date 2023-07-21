@@ -26,7 +26,7 @@ function onDownload() {
     </ResizePan>
     <img v-if="svg" :src="svgUrl" fixed bottom-10 right-10 w-200px border-1 rounded-2>
     <div flex="~ row " items-center justify-end>
-      <button :disabled="!svg" btn flex="~ items-center" gap-1 @click="onDownload">
+      <button :disabled="!svg" flex="~ items-center" gap-1 btn @click="onDownload">
         <div i-carbon:download />
         <span>Download</span>
       </button>

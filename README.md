@@ -10,12 +10,13 @@ It's just a basic implementation, it's not optimized and it's not finished.
 
 - [x] Basic Canvas, replay and export
 - [ ] Canvas size configuration
-- [ ] Live preview
-  - [x] preview as thumbnail
+- [ ] Realtime preview
+  - [x] Preview as thumbnail
   - [ ] Full screen / Original size preview
 - [ ] Replay configuration
   - [ ] Speed
   - [ ] Loop
+  - [ ] Animation easing
 - [ ] Operation history
   - [ ] Undo
   - [ ] Redo
@@ -24,4 +25,5 @@ It's just a basic implementation, it's not optimized and it's not finished.
   - [ ] Stroke width
 - [ ] Export format
   - [x] SVG
-  - [ ] GIF
+  - [ ] GIF (hold)
+- [ ] Logo

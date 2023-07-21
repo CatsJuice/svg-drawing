@@ -81,6 +81,10 @@ function onDrawEnd(_: Position) {
   emits('update', getSvg(props.options))
 }
 
+function onClear() {
+  lines.value = []
+}
+
 function getSvg(options: SvgReplayOptions = {}) {
   const {
     speed = 500,
@@ -132,6 +136,7 @@ useEventListener('touchend', onTouchEnd)
 
 defineExpose({
   getSvg,
+  onClear,
 })
 </script>
 

@@ -15,7 +15,7 @@ interface SharedInfo {
 
 export function createShareUrl(lines: SharedInfo['lines'], options: SharedInfo['options']) {
   const raw = JSON.stringify({ lines, options })
-  const hashed = btoa(raw)
+  const hashed = encodeURIComponent(btoa(raw))
   return `${location.origin}?${shareKey}=${hashed}`
 }
 
@@ -26,7 +26,7 @@ export function useShare() {
     if (!shareInfoRaw)
       return null
     try {
-      const raw = atob(shareInfoRaw)
+      const raw = atob(decodeURIComponent(shareInfoRaw))
       const { lines, options } = JSON.parse(raw)
       return { lines, options } as SharedInfo
     }

@@ -1,31 +1,32 @@
 <script setup>
-import { downloadSvg } from '../utils/helper'
+import { download, svgCode2Url } from '../utils/helper'
 
 const { width, height } = useCanvas()
-const $canvas = ref()
+const svg = ref('')
+
+const svgUrl = computed(() => svgCode2Url(svg.value))
 
 function onDownload() {
-  if (!$canvas.value)
-    return
-  const svg = $canvas.value.getSvg({})
-  downloadSvg(svg, 'svg-drawing.svg')
+  download(svgUrl.value, 'svg-drawing.svg')
 }
 </script>
 
 <template>
   <div full flex="~ col center" gap-2>
     <ResizePan v-model:width="width" v-model:height="height">
-      <Card>
+      <Card relative cursor-none>
         <SvgCanvas
-          ref="$canvas"
           :width="width"
           :height="height"
           background="white"
+          @update="svg = $event"
         />
+        <PenCursor class="!absolute" top-0 />
       </Card>
     </ResizePan>
+    <img v-if="svg" :src="svgUrl" fixed bottom-10 right-10 w-200px border-1 rounded-2>
     <div flex="~ row " items-center justify-end>
-      <button btn flex="~ items-center" gap-1 @click="onDownload">
+      <button :disabled="!svg" btn flex="~ items-center" gap-1 @click="onDownload">
         <div i-carbon:download />
         <span>Download</span>
       </button>

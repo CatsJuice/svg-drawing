@@ -18,8 +18,11 @@ export function download(href: string, filename: string) {
 }
 
 export function downloadSvg(svgCode: string, filename: string) {
-  const base64 = `data:image/svg+xml;base64,${btoa(svgCode)}`
-  download(base64, filename)
+  download(svgCode2Url(svgCode), filename)
+}
+
+export function svgCode2Url(svgCode: string) {
+  return `data:image/svg+xml;base64,${btoa(svgCode)}`
 }
 
 export function tag(tagName: string, props: Record<string, any>, children?: any[]) {

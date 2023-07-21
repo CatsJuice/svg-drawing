@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Card: typeof import('./components/Card.vue')['default']
+    GithubRepo: typeof import('./components/GithubRepo.vue')['default']
     PenCursor: typeof import('./components/PenCursor.vue')['default']
     README: typeof import('./components/README.md')['default']
     ResizePan: typeof import('./components/ResizePan.vue')['default']

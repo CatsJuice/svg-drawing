@@ -7,10 +7,14 @@ interface Props {
   height: number
   background: string
   densities?: number
+  options?: SvgReplayOptions
 }
 const props = withDefaults(defineProps<Props>(), {
   densities: 1,
 })
+const emits = defineEmits<{
+  'update': [svg: string]
+}>()
 
 const $svg = ref<SVGElement>()
 const drawing = ref(false)
@@ -65,9 +69,10 @@ function onDrawStart(e: MouseEvent) {
 }
 function onDrawEnd(_: MouseEvent) {
   drawing.value = false
+  emits('update', getSvg(props.options))
 }
 
-function getSvg(options: SvgReplayOptions) {
+function getSvg(options: SvgReplayOptions = {}) {
   const {
     speed = 500,
     loop = false,
@@ -117,11 +122,10 @@ defineExpose({
 </script>
 
 <template>
-  <div relative full cursor-none>
+  <div relative full>
     <svg ref="$svg" relative v-bind="svgAttrs" @mousedown="onDrawStart">
       <rect v-bind="bgRectAttrs" />
       <path v-for="(p, i) in paths" :key="i" v-bind="p" />
     </svg>
-    <PenCursor class="!absolute" top-0 />
   </div>
 </template>

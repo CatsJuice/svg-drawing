@@ -13,7 +13,7 @@ export default defineConfig({
   shortcuts: [
     ['full', 'w-full h-full'],
     ['flex-center', 'flex items-center justify-center'],
-    ['btn', 'rounded-2 px-4 py-2 bg-blue-500 text-white hover:bg-blue-600'],
+    ['btn', 'rounded-2 px-4 py-2 bg-purple-600 text-white hover:bg-purple-700'],
   ],
   presets: [
     presetUno(),

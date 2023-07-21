@@ -43,6 +43,9 @@ devDependencies:
   '@iconify-json/carbon':
     specifier: ^1.1.18
     version: 1.1.18
+  '@iconify-json/fa6-brands':
+    specifier: ^1.1.11
+    version: registry.npmmirror.com/@iconify-json/fa6-brands@1.1.11
   '@iconify-json/solar':
     specifier: ^1.1.1
     version: registry.npmmirror.com/@iconify-json/solar@1.1.1
@@ -10241,6 +10244,14 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  registry.npmmirror.com/@iconify-json/fa6-brands@1.1.11:
+    resolution: {integrity: sha512-+/dsIafxFCXlUvti0EHzVas9tnYXGqcSpybTBzzXbSVl2Ay1v26e/so/fz2Wrh8L3JrXq0LrMUYDsgZ4geQOqw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify-json/fa6-brands/-/fa6-brands-1.1.11.tgz}
+    name: '@iconify-json/fa6-brands'
+    version: 1.1.11
+    dependencies:
+      '@iconify/types': registry.npmmirror.com/@iconify/types@2.0.0
+    dev: true
 
   registry.npmmirror.com/@iconify-json/solar@1.1.1:
     resolution: {integrity: sha512-VN7vPHaUW5cASnm2iN986bwTMGans5zAk1cVYB6nAGDhWjqaBMS6bmYmlpAYpuLk08uMAp2YtLkC23XFQd1zhg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify-json/solar/-/solar-1.1.1.tgz}

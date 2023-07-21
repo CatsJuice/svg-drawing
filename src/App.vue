@@ -22,5 +22,8 @@ useHead({
 </script>
 
 <template>
+  <teleport to="body">
+    <GithubRepo fixed right-10 top-10 />
+  </teleport>
   <RouterView />
 </template>

@@ -9,6 +9,8 @@ It's just a basic implementation, it's not optimized and it's not finished.
 # Roadmap
 
 - [x] Basic Canvas, replay and export
+- [ ] Logo
+- [ ] README
 - [ ] Canvas size configuration
 - [ ] Realtime preview
   - [x] Preview as thumbnail
@@ -26,8 +28,7 @@ It's just a basic implementation, it's not optimized and it's not finished.
 - [ ] Export format
   - [x] SVG
   - [ ] GIF (hold)
-- [ ] Logo
 - [x] Brushwork support
   - See https://github.com/steveruizok/perfect-freehand
-- [ ] Import & Export
-- [ ] Share url
+- [ ] <span style="text-decoration: line-through">Import & Export</span>
+- [x] Share url

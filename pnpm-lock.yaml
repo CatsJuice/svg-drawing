@@ -17,6 +17,9 @@ dependencies:
   '@vueuse/head':
     specifier: ^1.1.26
     version: 1.1.26(vue@3.3.4)
+  mousetrap:
+    specifier: ^1.6.5
+    version: registry.npmmirror.com/mousetrap@1.6.5
   nprogress:
     specifier: ^0.2.0
     version: 0.2.0
@@ -12052,6 +12055,12 @@ packages:
     dependencies:
       brace-expansion: registry.npmmirror.com/brace-expansion@2.0.1
     dev: true
+
+  registry.npmmirror.com/mousetrap@1.6.5:
+    resolution: {integrity: sha512-QNo4kEepaIBwiT8CDhP98umTetp+JNfQYBWvC1pc6/OAibuXtRcxZ58Qz8skvEHYvURne/7R8T5VoOI7rDsEUA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/mousetrap/-/mousetrap-1.6.5.tgz}
+    name: mousetrap
+    version: 1.6.5
+    dev: false
 
   registry.npmmirror.com/ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz}

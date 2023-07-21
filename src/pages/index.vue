@@ -10,11 +10,6 @@ const svgUrl = computed(() => svgCode2Url(svg.value))
 function onDownload() {
   download(svgUrl.value, 'svg-drawing.svg')
 }
-
-function onClear() {
-  svgRef.value && svgRef.value.onClear()
-  svg.value = ''
-}
 </script>
 
 <template>
@@ -32,13 +27,27 @@ function onClear() {
       </Card>
     </ResizePan>
     <img v-if="svg" :src="svgUrl" fixed bottom-10 right-10 w-200px border-1 rounded-2>
-    <div flex="~ row " items-center justify-end gap-5>
-      <button :disabled="!svg" flex="~ items-center" gap-1 btn @click="onDownload">
+    <div flex="~ row " items-center justify-end gap2>
+      <button
+        :disabled="!svgRef?.canUndo"
+        flex="~ center" btn-outline px2 @click="svgRef?.undo?.()"
+      >
+        <div i-carbon:undo />
+      </button>
+
+      <button
+        :disabled="!svgRef?.canRedo"
+        flex="~ center" btn-outline px2 @click="svgRef?.redo?.()"
+      >
+        <div i-carbon:redo />
+      </button>
+
+      <button :disabled="!svg" flex="~ center" gap-1 btn @click="onDownload">
         <div i-carbon:download />
         <span>Download</span>
       </button>
 
-      <button :disabled="!svg" flex="~ items-center" gap-1 btn-ghost @click="onClear">
+      <button :disabled="!svg" flex="~ center" btn-outline gap-1 @click="svgRef?.onClear?.()">
         <div i-carbon:trash-can />
         <span>Clear</span>
       </button>

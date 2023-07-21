@@ -17,9 +17,9 @@ It's just a basic implementation, it's not optimized and it's not finished.
   - [ ] Speed
   - [ ] Loop
   - [ ] Animation easing
-- [ ] Operation history
-  - [ ] Undo
-  - [ ] Redo
+- [x] Operation history
+  - [x] Undo
+  - [x] Redo
 - [ ] Pen configuration
   - [ ] Color
   - [ ] Stroke width
@@ -29,3 +29,5 @@ It's just a basic implementation, it's not optimized and it's not finished.
 - [ ] Logo
 - [ ] Brushwork support
   - See https://github.com/steveruizok/perfect-freehand
+- [ ] Import & Export
+- [ ] Share url

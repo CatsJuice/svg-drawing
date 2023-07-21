@@ -13,21 +13,21 @@ It's just a basic implementation, it's not optimized and it's not finished.
 - [ ] Realtime preview
   - [x] Preview as thumbnail
   - [ ] Full screen / Original size preview
-- [ ] Replay configuration
-  - [ ] Speed
-  - [ ] Loop
-  - [ ] Animation easing
+- [x] Replay configuration
+  - [x] Speed
+  - [x] Loop
+  - [x] Animation easing
 - [x] Operation history
   - [x] Undo
   - [x] Redo
-- [ ] Pen configuration
-  - [ ] Color
-  - [ ] Stroke width
+- [x] Pen configuration
+  - [x] Color
+  - [x] Stroke width
 - [ ] Export format
   - [x] SVG
   - [ ] GIF (hold)
 - [ ] Logo
-- [ ] Brushwork support
+- [x] Brushwork support
   - See https://github.com/steveruizok/perfect-freehand
 - [ ] Import & Export
 - [ ] Share url

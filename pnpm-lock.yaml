@@ -17,6 +17,9 @@ dependencies:
   '@vueuse/head':
     specifier: ^1.1.26
     version: 1.1.26(vue@3.3.4)
+  lodash-es:
+    specifier: ^4.17.21
+    version: registry.npmmirror.com/lodash-es@4.17.21
   mousetrap:
     specifier: ^1.6.5
     version: registry.npmmirror.com/mousetrap@1.6.5
@@ -64,6 +67,9 @@ devDependencies:
   '@tweakpane/core':
     specifier: ^1.1.9
     version: registry.npmmirror.com/@tweakpane/core@1.1.9
+  '@types/lodash-es':
+    specifier: ^4.17.8
+    version: registry.npmmirror.com/@types/lodash-es@4.17.8
   '@types/markdown-it-link-attributes':
     specifier: ^3.0.1
     version: 3.0.1
@@ -10456,6 +10462,20 @@ packages:
     version: 1.0.1
     dev: true
 
+  registry.npmmirror.com/@types/lodash-es@4.17.8:
+    resolution: {integrity: sha512-euY3XQcZmIzSy7YH5+Unb3b2X12Wtk54YWINBvvGQ5SmMvwb11JQskGsfkH/5HXK77Kr8GF0wkVDIxzAisWtog==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/lodash-es/-/lodash-es-4.17.8.tgz}
+    name: '@types/lodash-es'
+    version: 4.17.8
+    dependencies:
+      '@types/lodash': registry.npmmirror.com/@types/lodash@4.14.195
+    dev: true
+
+  registry.npmmirror.com/@types/lodash@4.14.195:
+    resolution: {integrity: sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/lodash/-/lodash-4.14.195.tgz}
+    name: '@types/lodash'
+    version: 4.14.195
+    dev: true
+
   registry.npmmirror.com/@types/node@18.16.19:
     resolution: {integrity: sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.16.19.tgz}
     name: '@types/node'
@@ -11971,7 +11991,6 @@ packages:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lodash-es/-/lodash-es-4.17.21.tgz}
     name: lodash-es
     version: 4.17.21
-    dev: true
 
   registry.npmmirror.com/lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz}

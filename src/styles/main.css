@@ -37,3 +37,24 @@ html {
   width: 100%;
   height: 2px;
 }
+
+
+.toast {
+  font-size: 0.75rem;
+  background: #222;
+  color: #fff;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.25rem;
+}
+.toast::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border: 0.25rem solid transparent;
+  border-bottom-color: #222;
+}

@@ -15,6 +15,7 @@ interface Props {
   width: number
   height: number
   densities?: number
+  initialLines?: Line[]
 
   drawOptions?: DrawOptions
   replayOptions?: SvgReplayOptions
@@ -27,7 +28,7 @@ const emits = defineEmits(['update'])
 
 const $svg = ref<SVGElement>()
 const drawing = ref(false)
-const lines = ref<Line[]>([])
+const lines = ref<Line[]>(props.initialLines || [])
 const { commit, undo: _undo, redo: _redo, canRedo, canUndo } = useManualRefHistory(lines, {
   capacity: 20,
   clone: (v: any) => JSON.parse(JSON.stringify(v)),
@@ -194,6 +195,7 @@ defineExpose({
   redo,
   canRedo,
   canUndo,
+  lines,
 })
 </script>
 

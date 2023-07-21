@@ -10,6 +10,10 @@ useHead({
       name: 'theme-color',
       content: () => isDark.value ? '#00aba9' : '#ffffff',
     },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0, user-scalable=no',
+    },
   ],
   link: [
     {

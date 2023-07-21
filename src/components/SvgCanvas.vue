@@ -2,6 +2,10 @@
 import type { Line, SvgReplayOptions } from '../types/svg'
 import { lineLength, tab, tag } from '../utils/helper'
 
+interface Position {
+  x: number
+  y: number
+}
 interface Props {
   width: number
   height: number
@@ -21,8 +25,6 @@ const drawing = ref(false)
 const lines = ref<Line[]>([])
 
 const rect = useElementBounding($svg)
-useEventListener('mousemove', onDraw)
-useEventListener('mouseup', onDrawEnd)
 
 const svgAttrs = computed(() => ({
   'width': props.width,
@@ -48,12 +50,19 @@ const paths = computed(() => lines.value.map(line => ({
   'fill': 'none',
 } as any)))
 
-function onDraw(e: MouseEvent) {
+const onMousedown = (e: MouseEvent) => onDrawStart({ x: e.clientX, y: e.clientY })
+const onMousemove = (e: MouseEvent) => onDraw({ x: e.clientX, y: e.clientY })
+const onMouseup = (e: MouseEvent) => onDrawEnd({ x: e.clientX, y: e.clientY })
+const onTouchStart = (e: TouchEvent) => onDrawStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+const onTouchMove = (e: TouchEvent) => onDraw({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+const onTouchEnd = (e: TouchEvent) => onDrawEnd({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+
+function onDraw(pos: Position) {
   if (!drawing.value)
     return
   const currentLine = lines.value[lines.value.length - 1]
   const prevPoint = currentLine[currentLine.length - 1]
-  const point = [e.clientX - rect.left.value, e.clientY - rect.top.value]
+  const point = [pos.x - rect.left.value, pos.y - rect.top.value]
   if (!prevPoint)
     currentLine.push(point)
   else if (
@@ -62,12 +71,12 @@ function onDraw(e: MouseEvent) {
   )
     currentLine.push(point)
 }
-function onDrawStart(e: MouseEvent) {
+function onDrawStart(e: Position) {
   drawing.value = true
   lines.value.push([])
   onDraw(e)
 }
-function onDrawEnd(_: MouseEvent) {
+function onDrawEnd(_: Position) {
   drawing.value = false
   emits('update', getSvg(props.options))
 }
@@ -116,6 +125,11 @@ function getSvg(options: SvgReplayOptions = {}) {
   ])
 }
 
+useEventListener('mousemove', onMousemove)
+useEventListener('mouseup', onMouseup)
+useEventListener('touchmove', onTouchMove)
+useEventListener('touchend', onTouchEnd)
+
 defineExpose({
   getSvg,
 })
@@ -123,7 +137,7 @@ defineExpose({
 
 <template>
   <div relative full>
-    <svg ref="$svg" relative v-bind="svgAttrs" @mousedown="onDrawStart">
+    <svg ref="$svg" relative v-bind="svgAttrs" @mousedown="onMousedown" @touchstart="onTouchStart">
       <rect v-bind="bgRectAttrs" />
       <path v-for="(p, i) in paths" :key="i" v-bind="p" />
     </svg>

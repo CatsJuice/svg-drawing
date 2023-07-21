@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+// @ts-expect-error - no types
+import Mousetrap from 'mousetrap'
 import type { Line, SvgReplayOptions } from '../types/svg'
 import { lineLength, tab, tag } from '../utils/helper'
 
@@ -16,13 +18,20 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   densities: 1,
 })
-const emits = defineEmits<{
-  'update': [svg: string]
-}>()
+const emits = defineEmits(['update'])
 
 const $svg = ref<SVGElement>()
 const drawing = ref(false)
 const lines = ref<Line[]>([])
+const { commit, undo: _undo, redo: _redo, canRedo, canUndo } = useManualRefHistory(lines, {
+  capacity: 20,
+  clone: (v: any) => JSON.parse(JSON.stringify(v)),
+})
+
+onMounted(() => {
+  Mousetrap.bind(['command+z', 'ctrl+z'], undo)
+  Mousetrap.bind(['command+shift+z', 'ctrl+shift+z'], redo)
+})
 
 const rect = useElementBounding($svg)
 
@@ -40,9 +49,10 @@ const bgRectAttrs = computed(() => ({
   height: props.height,
   fill: props.background,
 }))
-
 const paths = computed(() => lines.value.map(line => ({
-  'd': `M${line.map(p => p.join(',')).join('L')}`,
+  'd': line.length === 1
+    ? `M${line[0].join(' ')}L${line[0].join(' ')}`
+    : `M${line.map(p => p.join(',')).join('L')}`,
   'stroke-width': '5',
   'stroke-linecap': 'round',
   'stroke-linejoin': 'round',
@@ -52,10 +62,19 @@ const paths = computed(() => lines.value.map(line => ({
 
 const onMousedown = (e: MouseEvent) => onDrawStart({ x: e.clientX, y: e.clientY })
 const onMousemove = (e: MouseEvent) => onDraw({ x: e.clientX, y: e.clientY })
-const onMouseup = (e: MouseEvent) => onDrawEnd({ x: e.clientX, y: e.clientY })
+const onMouseup = (_: MouseEvent) => onDrawEnd()
 const onTouchStart = (e: TouchEvent) => onDrawStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
 const onTouchMove = (e: TouchEvent) => onDraw({ x: e.touches[0].clientX, y: e.touches[0].clientY })
-const onTouchEnd = (e: TouchEvent) => onDrawEnd({ x: e.touches[0].clientX, y: e.touches[0].clientY })
+const onTouchEnd = (_: TouchEvent) => onDrawEnd()
+
+function undo() {
+  _undo()
+  submitSvg()
+}
+function redo() {
+  _redo()
+  submitSvg()
+}
 
 function onDraw(pos: Position) {
   if (!drawing.value)
@@ -66,8 +85,8 @@ function onDraw(pos: Position) {
   if (!prevPoint)
     currentLine.push(point)
   else if (
-    Math.abs(prevPoint[0] - point[0]) > props.densities
-    || Math.abs(prevPoint[1] - point[1]) > props.densities
+    Math.abs(prevPoint[0] - point[0]) >= props.densities
+    || Math.abs(prevPoint[1] - point[1]) >= props.densities
   )
     currentLine.push(point)
 }
@@ -76,16 +95,27 @@ function onDrawStart(e: Position) {
   lines.value.push([])
   onDraw(e)
 }
-function onDrawEnd(_: Position) {
+function onDrawEnd() {
+  if (!drawing.value)
+    return
   drawing.value = false
+  submitSvg()
+  commit()
+}
+
+function submitSvg() {
   emits('update', getSvg(props.options))
 }
 
 function onClear() {
-  lines.value = []
+  lines.value.splice(0)
+  submitSvg()
+  commit()
 }
 
 function getSvg(options: SvgReplayOptions = {}) {
+  if (!paths.value.length)
+    return ''
   const {
     speed = 500,
     loop = false,
@@ -119,7 +149,10 @@ function getSvg(options: SvgReplayOptions = {}) {
   })
   const styleTag = `<style>\n${styles.join('\n')}\n</style>`
 
-  return tag('svg', svgAttrs.value, [
+  return tag('svg', {
+    ...(svgAttrs.value || {}),
+    'data-cache': Date.now(),
+  }, [
     styleTag,
     tag('rect', bgRectAttrs.value),
     ...paths.value.map((p, i) => tag('path', {
@@ -137,6 +170,10 @@ useEventListener('touchend', onTouchEnd)
 defineExpose({
   getSvg,
   onClear,
+  undo,
+  redo,
+  canRedo,
+  canUndo,
 })
 </script>
 

@@ -27,3 +27,5 @@ It's just a basic implementation, it's not optimized and it's not finished.
   - [x] SVG
   - [ ] GIF (hold)
 - [ ] Logo
+- [ ] Brushwork support
+  - See https://github.com/steveruizok/perfect-freehand

@@ -1,3 +1,5 @@
+import type getStroke from 'perfect-freehand'
+
 export type Point = number[]
 export type Line = Point[]
 
@@ -6,3 +8,11 @@ export interface SvgReplayOptions {
   loop?: boolean
   easing?: string
 }
+
+export interface DrawOptions {
+  color?: string
+  background?: string
+  strokeWidth?: number
+}
+
+export type BrushOptions = Parameters<typeof getStroke>[1]

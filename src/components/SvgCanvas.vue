@@ -1,19 +1,24 @@
 <script lang="ts" setup>
+import { getStroke } from 'perfect-freehand'
+
 // @ts-expect-error - no types
 import Mousetrap from 'mousetrap'
-import type { Line, SvgReplayOptions } from '../types/svg'
 import { lineLength, tab, tag } from '../utils/helper'
+import type { BrushOptions, DrawOptions, Line, SvgReplayOptions } from '../types/svg'
 
 interface Position {
   x: number
   y: number
 }
+
 interface Props {
   width: number
   height: number
-  background: string
   densities?: number
-  options?: SvgReplayOptions
+
+  drawOptions?: DrawOptions
+  replayOptions?: SvgReplayOptions
+  brushOptions?: BrushOptions
 }
 const props = withDefaults(defineProps<Props>(), {
   densities: 1,
@@ -47,18 +52,23 @@ const bgRectAttrs = computed(() => ({
   y: 0,
   width: props.width,
   height: props.height,
-  fill: props.background,
+  fill: props.drawOptions?.background ?? 'white',
 }))
 const paths = computed(() => lines.value.map(line => ({
   'd': line.length === 1
     ? `M${line[0].join(' ')}L${line[0].join(' ')}`
     : `M${line.map(p => p.join(',')).join('L')}`,
-  'stroke-width': '5',
+  'stroke-width': props.drawOptions?.strokeWidth ?? '5',
   'stroke-linecap': 'round',
   'stroke-linejoin': 'round',
-  'stroke': 'black',
+  'stroke': props.drawOptions?.color ?? 'black',
   'fill': 'none',
 } as any)))
+const brushworkLines = computed(() => lines.value.map((line) => {
+  const points = getStroke(line, props.brushOptions)
+  const d = `M${points.map(p => p.join(',')).join('L')}Z`
+  return { d }
+}))
 
 const onMousedown = (e: MouseEvent) => onDrawStart({ x: e.clientX, y: e.clientY })
 const onMousemove = (e: MouseEvent) => onDraw({ x: e.clientX, y: e.clientY })
@@ -89,6 +99,7 @@ function onDraw(pos: Position) {
     || Math.abs(prevPoint[1] - point[1]) >= props.densities
   )
     currentLine.push(point)
+  brushworkLine(currentLine)
 }
 function onDrawStart(e: Position) {
   drawing.value = true
@@ -102,17 +113,14 @@ function onDrawEnd() {
   submitSvg()
   commit()
 }
-
 function submitSvg() {
-  emits('update', getSvg(props.options))
+  emits('update', getSvg(props.replayOptions))
 }
-
 function onClear() {
   lines.value.splice(0)
   submitSvg()
   commit()
 }
-
 function getSvg(options: SvgReplayOptions = {}) {
   if (!paths.value.length)
     return ''
@@ -155,11 +163,21 @@ function getSvg(options: SvgReplayOptions = {}) {
   }, [
     styleTag,
     tag('rect', bgRectAttrs.value),
-    ...paths.value.map((p, i) => tag('path', {
+    tag('g', { mask: 'url(#brush)' }, paths.value.map((p, i) => tag('path', {
       ...p,
       class: `line-${i}`,
-    })),
+    }))),
+    tag('mask', { id: 'brush' }, [
+      tag('rect', { x: 0, y: 0, width: '100%', height: '100%', fill: 'black' }),
+      ...brushworkLines.value.map(p => tag('path', {
+        ...p,
+        fill: 'white',
+      })),
+    ]),
   ])
+}
+function brushworkLine(line: Line) {
+  return getStroke(line)
 }
 
 useEventListener('mousemove', onMousemove)
@@ -181,7 +199,13 @@ defineExpose({
   <div relative full>
     <svg ref="$svg" relative v-bind="svgAttrs" @mousedown="onMousedown" @touchstart="onTouchStart">
       <rect v-bind="bgRectAttrs" />
-      <path v-for="(p, i) in paths" :key="i" v-bind="p" />
+      <g mask="url(#brush)">
+        <path v-for="(p, i) in paths" :key="i" v-bind="p" />
+      </g>
+      <mask id="brush">
+        <rect x="0" y="0" width="100%" height="100%" fill="black" />
+        <path v-for="(p, i) in brushworkLines" :key="i" fill="white" v-bind="p" />
+      </mask>
     </svg>
   </div>
 </template>

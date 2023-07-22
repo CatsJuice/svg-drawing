@@ -121,40 +121,72 @@ function onShare(e: MouseEvent) {
       v-if="svg"
       :svg-code="svg"
     />
-    <div flex="~ row " items-center justify-between gap2 :style="{ width: `${width}px` }">
-      <div flex="~" items-center gap2>
-        <button
-          :disabled="!svgRef?.canUndo"
-          flex="~ center" px2 btn-outline @click="svgRef?.undo?.()"
-        >
-          <div i-carbon:undo />
-        </button>
 
-        <button
-          :disabled="!svgRef?.canRedo"
-          flex="~ center" px2 btn-outline @click="svgRef?.redo?.()"
-        >
-          <div i-carbon:redo />
-        </button>
-        <button :disabled="!svg" flex="~ center" gap-1 text-sm btn-outline @click="svgRef?.onClear?.()">
-          <div i-carbon:trash-can />
-          <span>Clear</span>
-        </button>
+    <Teleport to="body">
+      <div
+        fixed
+        left="1/2"
+        translate-x="-1/2"
+        bottom-20px
+        class="toolbar"
+        flex="~ row" w="9/10"
+        max-w-500px items-center justify-between gap2 rounded-4 p2
+      >
+        <div flex="~" items-center gap2>
+          <button
+            :disabled="!svgRef?.canUndo"
+            flex="~ center" px2 btn-outline @click="svgRef?.undo?.()"
+          >
+            <div i-carbon:undo />
+          </button>
+
+          <button
+            :disabled="!svgRef?.canRedo"
+            flex="~ center" px2 btn-outline @click="svgRef?.redo?.()"
+          >
+            <div i-carbon:redo />
+          </button>
+          <button :disabled="!svg" flex="~ center" gap-1 px2 text-sm btn-outline sm:px4 @click="svgRef?.onClear?.()">
+            <div i-carbon:trash-can />
+            <span display-none sm:display-inline>Clear</span>
+          </button>
+        </div>
+
+        <div flex="~" items-center gap-2>
+          <button
+            :disabled="!svg" flex="~ center" gap-1 px2 btn-outline
+            @click="onShare"
+          >
+            <div i-carbon:share pointer-events-none />
+          </button>
+
+          <button :disabled="!svg" flex="~ center" gap-1 btn @click="download(svgUrl, 'svg-drawing.svg')">
+            <div i-carbon:download />
+            <span xs:display-none display-inline>Save</span>
+          </button>
+        </div>
       </div>
-
-      <div flex="~" items-center gap-2>
-        <button
-          :disabled="!svg" flex="~ center" gap-1 px2 btn-outline
-          @click="onShare"
-        >
-          <div i-carbon:share pointer-events-none />
-        </button>
-
-        <button :disabled="!svg" flex="~ center" gap-1 btn @click="download(svgUrl, 'svg-drawing.svg')">
-          <div i-carbon:download />
-          <span>Save</span>
-        </button>
-      </div>
-    </div>
+    </Teleport>
   </div>
 </template>
+
+<style lang="scss">
+.toolbar {
+  background: linear-gradient(90deg, #ffffff00 0%, #fcfcfc00 100%);
+  backdrop-filter:  blur(3px);
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(180px circle,rgba(80,80,80,0.25), rgba(0,0,0,0.1));
+    border-radius: inherit;
+
+    -webkit-mask: linear-gradient(#000,#000) content-box content-box,linear-gradient(#000,#000);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1px;
+    pointer-events: none;
+  }
+}
+</style>

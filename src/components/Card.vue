@@ -3,15 +3,9 @@
 </script>
 
 <template>
-  <div class="card" full border-1 rounded-12px p-1px>
-    <div full overflow-hidden rounded-11px bg-white>
-      <slot />
-    </div>
+  <div
+    class="card" full overflow-hidden border-1 rounded-11px rounded-12px p-1px
+  >
+    <slot />
   </div>
 </template>
-
-<style scoped>
-.card {
-  background: linear-gradient(45deg, #EEEEEE 0%, #FCFCFC 100%);
-}
-</style>

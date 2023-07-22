@@ -101,6 +101,11 @@ function debugPane() {
   brushPane.addInput(brushOptions!, 'thinning', { label: 'Thinning', min: 0, max: 1, step: 0.01 })
   brushPane.addInput(brushOptions!.start!, 'taper', { label: 'Start Taper', min: 0, max: 100, step: 1 })
   brushPane.addInput(brushOptions!.end!, 'taper', { label: 'End Taper', min: 0, max: 100, step: 1 })
+
+  // experimental
+  const brushExperimentalPane = brushPane.addFolder({ title: 'Experimental', expanded: false })
+  brushExperimentalPane.addInput(brushOptions!, 'streamline', { label: 'Streamline', min: 0, max: 1, step: 0.01 })
+  brushExperimentalPane.addInput(brushOptions!, 'smoothing', { label: 'Smoothing', min: 0, max: 1, step: 0.01 })
 }
 </script>
 

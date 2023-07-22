@@ -15,6 +15,8 @@ import Unocss from 'unocss/vite'
 import Shiki from 'markdown-it-shiki'
 import VueMacros from 'unplugin-vue-macros/vite'
 import WebfontDownload from 'vite-plugin-webfont-dl'
+import { quasar } from '@quasar/vite-plugin'
+import { QuasarResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
   resolve: {
@@ -24,10 +26,15 @@ export default defineConfig({
   },
 
   plugins: [
+    quasar({
+      sassVariables: 'src/quasar/variables.sass',
+    }),
+
     VueMacros({
       plugins: {
         vue: Vue({
           include: [/\.vue$/, /\.md$/],
+          // template: { transformAssetUrls },
         }),
       },
     }),
@@ -48,6 +55,11 @@ export default defineConfig({
         'vue-i18n',
         '@vueuse/head',
         '@vueuse/core',
+        {
+          quasar: [
+            'useQuasar',
+          ],
+        },
       ],
       dts: 'src/auto-imports.d.ts',
       dirs: [
@@ -55,6 +67,7 @@ export default defineConfig({
         'src/stores',
       ],
       vueTemplate: true,
+
     }),
 
     // https://github.com/antfu/unplugin-vue-components
@@ -64,6 +77,9 @@ export default defineConfig({
       // allow auto import and register components used in markdown
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       dts: 'src/components.d.ts',
+      resolvers: [
+        QuasarResolver(),
+      ],
     }),
 
     // https://github.com/antfu/unocss

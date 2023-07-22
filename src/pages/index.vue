@@ -117,11 +117,10 @@ function onShare(e: MouseEvent) {
         <PenCursor class="!absolute" top-0 />
       </Card>
     </ResizePan>
-    <img
+    <SvgPreviewer
       v-if="svg"
-      draggable="false"
-      :src="svgUrl" fixed bottom-10 left-10 w-200px border-1 rounded-2
-    >
+      :svg-code="svg"
+    />
     <div flex="~ row " items-center justify-between gap2 :style="{ width: `${width}px` }">
       <div flex="~" items-center gap2>
         <button

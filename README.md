@@ -12,9 +12,9 @@ It's just a basic implementation, it's not optimized and it's not finished.
 - [ ] Logo
 - [ ] README
 - [ ] Canvas size configuration
-- [ ] Realtime preview
+- [x] Realtime preview
   - [x] Preview as thumbnail
-  - [ ] Full screen / Original size preview
+  - [x] Full screen / Original size preview
 - [x] Replay configuration
   - [x] Speed
   - [x] Loop

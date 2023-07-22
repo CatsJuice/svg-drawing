@@ -15,7 +15,6 @@ import Unocss from 'unocss/vite'
 import Shiki from 'markdown-it-shiki'
 import VueMacros from 'unplugin-vue-macros/vite'
 import WebfontDownload from 'vite-plugin-webfont-dl'
-import { quasar } from '@quasar/vite-plugin'
 import { QuasarResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
@@ -26,9 +25,6 @@ export default defineConfig({
   },
 
   plugins: [
-    quasar({
-      sassVariables: 'src/quasar/variables.sass',
-    }),
 
     VueMacros({
       plugins: {

@@ -152,7 +152,7 @@ function onShare(e: MouseEvent) {
 
         <button :disabled="!svg" flex="~ center" gap-1 btn @click="download(svgUrl, 'svg-drawing.svg')">
           <div i-carbon:download />
-          <span>Download</span>
+          <span>Save</span>
         </button>
       </div>
     </div>

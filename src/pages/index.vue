@@ -6,6 +6,7 @@ import type { BrushOptions, DrawOptions, SvgReplayOptions } from '../types/svg'
 import { createToast } from '../utils/toast'
 
 const SvgCanvas = defineAsyncComponent(() => import('../components/SvgCanvas.vue'))
+const ResizePan = defineAsyncComponent(() => import('../components/ResizePan.vue'))
 
 const { createShareUrl, parseShareInfo } = useShare()
 const { copy } = useClipboard()
@@ -114,14 +115,14 @@ function debugPane() {
     <teleport to="body">
       <div ref="paneRef" fixed left-2 top-2 z-100 w-280px />
     </teleport>
-    <ResizePan
-      :width="width"
-      :height="height"
-      @update:width="updateCanvasWidth"
-      @update:height="updateCanvasHeight"
-    >
-      <Card relative cursor-none>
-        <ClientOnly>
+    <ClientOnly>
+      <ResizePan
+        :width="width"
+        :height="height"
+        @update:width="updateCanvasWidth"
+        @update:height="updateCanvasHeight"
+      >
+        <Card relative cursor-none>
           <SvgCanvas
             ref="svgRef"
             :initial-lines="initialLines"
@@ -132,10 +133,10 @@ function debugPane() {
             :height="height"
             @update="svg = $event"
           />
-        </ClientOnly>
-        <PenCursor class="!absolute" top-0 />
-      </Card>
-    </ResizePan>
+          <PenCursor class="!absolute" top-0 />
+        </Card>
+      </ResizePan>
+    </ClientOnly>
     <SvgPreviewer
       v-if="svg"
       :svg-code="svg"
@@ -211,8 +212,8 @@ function debugPane() {
 
 <style lang="scss">
 .toolbar {
-  background: linear-gradient(90deg, #ffffff00 0%, #fcfcfc00 100%);
-  backdrop-filter:  blur(3px);
+  background: linear-gradient(90deg, #ffffff30 0%, #fcfcfcaa 100%);
+  backdrop-filter:  blur(10px);
   position: relative;
   &::after {
     content: "";

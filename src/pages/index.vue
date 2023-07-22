@@ -19,10 +19,6 @@ const initialLines = shared?.lines || []
 const initialDrawOptions = shared?.options?.drawOptions || {}
 const initialReplayOptions = shared?.options?.replayOptions || {}
 const initialBrushOptions = shared?.options?.brushOptions || {}
-if (shared?.options.width)
-  width.value = shared.options.width
-if (shared?.options.height)
-  height.value = shared.options.height
 
 const drawOptions: DrawOptions = reactive({
   background: '#fff',
@@ -59,8 +55,28 @@ const finalBrushOptions = computed(() => ({
 }))
 
 onMounted(() => {
-  // if (!paneRef.value)
-  //   return
+  const { innerWidth, innerHeight } = window
+  if (canvasWidth.value > innerWidth + 20)
+    canvasWidth.value = innerWidth - 20
+  if (canvasHeight.value > innerHeight + 20)
+    canvasHeight.value = innerHeight - 20
+
+  if (shared?.options.width)
+    width.value = shared.options.width
+  if (shared?.options.height)
+    height.value = shared.options.height
+
+  debugPane()
+})
+
+function onShare(e: MouseEvent) {
+  const url = createShareUrl(svgRef.value?.lines, { drawOptions, replayOptions, brushOptions, width: width.value, height: height.value })
+  copy(url)
+  const target = e.target as HTMLElement
+  createToast(target, 'Share link copied!')
+}
+
+function debugPane() {
   const pane = new Pane({ container: paneRef.value })
   const drawPane = pane.addFolder({ title: 'Draw Options', expanded: false })
   drawPane.addInput(drawOptions, 'background', { label: 'Background' })
@@ -85,13 +101,6 @@ onMounted(() => {
   brushPane.addInput(brushOptions!, 'thinning', { label: 'Thinning', min: 0, max: 1, step: 0.01 })
   brushPane.addInput(brushOptions!.start!, 'taper', { label: 'Start Taper', min: 0, max: 100, step: 1 })
   brushPane.addInput(brushOptions!.end!, 'taper', { label: 'End Taper', min: 0, max: 100, step: 1 })
-})
-
-function onShare(e: MouseEvent) {
-  const url = createShareUrl(svgRef.value?.lines, { drawOptions, replayOptions, brushOptions, width: width.value, height: height.value })
-  copy(url)
-  const target = e.target as HTMLElement
-  createToast(target, 'Share link copied!')
 }
 </script>
 
@@ -100,7 +109,12 @@ function onShare(e: MouseEvent) {
     <teleport to="body">
       <div ref="paneRef" fixed left-2 top-2 z-100 w-280px />
     </teleport>
-    <ResizePan v-model:width="width" v-model:height="height">
+    <ResizePan
+      :width="width"
+      :height="height"
+      @update:width="updateCanvasWidth"
+      @update:height="updateCanvasHeight"
+    >
       <Card relative cursor-none>
         <ClientOnly>
           <SvgCanvas
@@ -124,45 +138,65 @@ function onShare(e: MouseEvent) {
 
     <Teleport to="body">
       <div
-        fixed
         left="1/2"
         translate-x="-1/2"
-        bottom-20px
         class="toolbar"
-        flex="~ row" w="9/10"
-        max-w-500px items-center justify-between gap2 rounded-4 p2
+        w="9/10"
+
+        fixed bottom-20px max-w-700px flex flex-row items-center justify-between gap4 rounded-4 p2
       >
         <div flex="~" items-center gap2>
           <button
             :disabled="!svgRef?.canUndo"
-            flex="~ center" px2 btn-outline @click="svgRef?.undo?.()"
+            flex="~ center" h10 w10 px2 btn-outline @click="svgRef?.undo?.()"
           >
             <div i-carbon:undo />
           </button>
 
           <button
+
             :disabled="!svgRef?.canRedo"
-            flex="~ center" px2 btn-outline @click="svgRef?.redo?.()"
+            flex="~ center" h10 w10 px2 btn-outline @click="svgRef?.redo?.()"
           >
             <div i-carbon:redo />
           </button>
-          <button :disabled="!svg" flex="~ center" gap-1 px2 text-sm btn-outline sm:px4 @click="svgRef?.onClear?.()">
+          <button
+            :disabled="!svg" flex="~ center" h10 w10 gap-1 px2 text-sm sm:w-auto btn-outline sm:px4 @click="svgRef?.onClear?.()"
+          >
             <div i-carbon:trash-can />
             <span display-none sm:display-inline>Clear</span>
           </button>
         </div>
 
+        <div display-none items-center gap2 sm:flex>
+          <q-input
+            suffix="px" dense outlined max-w-40px
+            :model-value="width"
+            @update:model-value="updateCanvasWidth"
+          />
+          <span>*</span>
+          <q-input
+            suffix="px" dense outlined max-w-40px
+            :model-value="height"
+            @update:model-value="updateCanvasHeight"
+          />
+        </div>
+
         <div flex="~" items-center gap-2>
           <button
+            h10 w10
             :disabled="!svg" flex="~ center" gap-1 px2 btn-outline
             @click="onShare"
           >
             <div i-carbon:share pointer-events-none />
           </button>
 
-          <button :disabled="!svg" flex="~ center" gap-1 btn @click="download(svgUrl, 'svg-drawing.svg')">
+          <button
+            :disabled="!svg" flex="~ center" h10 gap-1 btn
+            @click="download(svgUrl, 'svg-drawing.svg')"
+          >
             <div i-carbon:download />
-            <span xs:display-none display-inline>Save</span>
+            <span>Save</span>
           </button>
         </div>
       </div>

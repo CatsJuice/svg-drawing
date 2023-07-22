@@ -71,7 +71,11 @@ const brushworkLines = computed(() => lines.value.map((line) => {
   return { d }
 }))
 
-watch(() => props.replayOptions, submitSvg, { deep: true })
+watch([
+  () => props.replayOptions,
+  () => props.width,
+  () => props.height,
+], submitSvg, { deep: true })
 
 const onMousedown = (e: MouseEvent) => onDrawStart({ x: e.clientX, y: e.clientY })
 const onMousemove = (e: MouseEvent) => onDraw({ x: e.clientX, y: e.clientY })

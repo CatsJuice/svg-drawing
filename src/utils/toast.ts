@@ -15,7 +15,11 @@ export function createToast(
   toast.style.position = 'fixed'
   toast.style.zIndex = '999'
   toast.style.left = `${rect.left + rect.width / 2}px`
-  toast.style.top = `${rect.bottom + 10}px`
+  if (options?.position === 'top')
+    toast.style.bottom = `${window.innerHeight - rect.top + 10}px`
+  else if (options?.position === 'bottom')
+    toast.style.top = `${rect.bottom + 10}px`
+
   toast.style.transform = 'translateX(-50%)'
   toast.style.opacity = '1'
   toast.style.transition = 'opacity 0.3s ease'

@@ -73,6 +73,7 @@ const brushworkLines = computed(() => lines.value.map((line) => {
 
 watch([
   () => props.replayOptions,
+  () => props.drawOptions,
   () => props.width,
   () => props.height,
 ], submitSvg, { deep: true })

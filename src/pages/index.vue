@@ -74,7 +74,7 @@ function onShare(e: MouseEvent) {
   const url = createShareUrl(svgRef.value?.lines, { drawOptions, replayOptions, brushOptions, width: width.value, height: height.value })
   copy(url)
   const target = e.target as HTMLElement
-  createToast(target, 'Share link copied!')
+  createToast(target, 'Share link copied!', { position: 'top' })
 }
 
 function debugPane() {

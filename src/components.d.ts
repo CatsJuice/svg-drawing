@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     Card: typeof import('./components/Card.vue')['default']
     GithubRepo: typeof import('./components/GithubRepo.vue')['default']
     PenCursor: typeof import('./components/PenCursor.vue')['default']
+    QInput: typeof import('quasar')['QInput']
     ResizePan: typeof import('./components/ResizePan.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

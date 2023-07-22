@@ -98,7 +98,7 @@ function onShare(e: MouseEvent) {
 <template>
   <div full flex="~ col center" gap-2>
     <teleport to="body">
-      <div ref="paneRef" fixed left-2 top-2 w-280px />
+      <div ref="paneRef" fixed left-2 top-2 z-100 w-280px />
     </teleport>
     <ResizePan v-model:width="width" v-model:height="height">
       <Card relative cursor-none>
@@ -117,11 +117,10 @@ function onShare(e: MouseEvent) {
         <PenCursor class="!absolute" top-0 />
       </Card>
     </ResizePan>
-    <img
+    <SvgPreviewer
       v-if="svg"
-      draggable="false"
-      :src="svgUrl" fixed bottom-10 left-10 w-200px border-1 rounded-2
-    >
+      :svg-code="svg"
+    />
     <div flex="~ row " items-center justify-between gap2 :style="{ width: `${width}px` }">
       <div flex="~" items-center gap2>
         <button
@@ -153,7 +152,7 @@ function onShare(e: MouseEvent) {
 
         <button :disabled="!svg" flex="~ center" gap-1 btn @click="download(svgUrl, 'svg-drawing.svg')">
           <div i-carbon:download />
-          <span>Download</span>
+          <span>Save</span>
         </button>
       </div>
     </div>

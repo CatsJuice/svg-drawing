@@ -19,6 +19,7 @@
     "sizecheck": "npx vite-bundle-visualizer"
   },
   "dependencies": {
+    "@quasar/extras": "^1.16.5",
     "@unhead/vue": "^1.1.30",
     "@unocss/reset": "^0.53.5",
     "@vueuse/core": "^10.2.1",
@@ -28,6 +29,7 @@
     "nprogress": "^0.2.0",
     "perfect-freehand": "^1.2.0",
     "pinia": "^2.1.4",
+    "quasar": "^2.12.3",
     "tweakpane": "^3.1.10",
     "vue": "^3.3.4",
     "vue-demi": "^0.14.5",
@@ -40,6 +42,7 @@
     "@iconify-json/fa6-brands": "^1.1.11",
     "@iconify-json/solar": "^1.1.1",
     "@intlify/unplugin-vue-i18n": "^0.12.2",
+    "@quasar/vite-plugin": "^1.4.1",
     "@tweakpane/core": "^1.1.9",
     "@types/lodash-es": "^4.17.8",
     "@types/markdown-it-link-attributes": "^3.0.1",
@@ -59,13 +62,14 @@
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-shiki": "^0.9.0",
     "pnpm": "^8.6.7",
+    "sass": "1.32.12",
     "shiki": "^0.14.3",
     "simple-git-hooks": "^2.8.1",
     "taze": "^0.11.2",
     "typescript": "^5.1.6",
     "unocss": "^0.53.5",
     "unplugin-auto-import": "^0.16.6",
-    "unplugin-vue-components": "^0.25.1",
+    "unplugin-vue-components": "^0.24.1",
     "unplugin-vue-macros": "^2.3.6",
     "vite": "^4.4.3",
     "vite-bundle-visualizer": "^0.8.0",
@@ -86,6 +90,6 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*": "eslint --fix"
+    "*.(vue|ts|js)": "eslint --fix"
   }
 }

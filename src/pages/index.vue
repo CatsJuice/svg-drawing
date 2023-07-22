@@ -98,7 +98,7 @@ function onShare(e: MouseEvent) {
 <template>
   <div full flex="~ col center" gap-2>
     <teleport to="body">
-      <div ref="paneRef" fixed left-2 top-2 w-280px />
+      <div ref="paneRef" fixed left-2 top-2 z-100 w-280px />
     </teleport>
     <ResizePan v-model:width="width" v-model:height="height">
       <Card relative cursor-none>

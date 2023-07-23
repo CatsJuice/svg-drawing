@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="./public/demos/svg-drawing.svg" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./public/demos/svg-drawing-dark.svg">
+    <img src="./public/demos/svg-drawing.svg">
+  </picture>
 </p>
 
 # svg-drawing

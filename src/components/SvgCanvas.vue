@@ -67,7 +67,7 @@ const paths = computed(() => lines.value.map(line => ({
 } as any)))
 const brushworkLines = computed(() => lines.value.map((line) => {
   const points = getStroke(line, props.brushOptions)
-  const d = `M${points.map(p => p.join(',')).join('L')}Z`
+  const d = `M${points.map(p => p.map(v => v.toFixed(2)).join(',')).join('L')}Z`
   return { d }
 }))
 

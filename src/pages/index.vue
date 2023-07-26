@@ -31,6 +31,8 @@ const replayOptions: SvgReplayOptions = reactive({
   easing: 'ease',
   loop: true,
   speed: 500,
+  loopInterval: 1000,
+  wipe: 500,
   ...initialReplayOptions,
 })
 const brushOptions: BrushOptions = reactive(merge({
@@ -97,6 +99,8 @@ function debugPane() {
   })
   replayPane.addInput(replayOptions, 'loop', { label: 'Loop' })
   replayPane.addInput(replayOptions, 'speed', { label: 'Speed', min: 50, max: 2000, step: 10 })
+  replayPane.addInput(replayOptions, 'loopInterval', { label: 'Loop Interval', min: 100, max: 5000, step: 100 })
+  replayPane.addInput(replayOptions, 'wipe', { label: 'Wipe', min: 0, max: 5000, step: 100 })
 
   const brushPane = pane.addFolder({ title: 'Brush Options', expanded: false })
   brushPane.addInput(brushOptions!, 'thinning', { label: 'Thinning', min: 0, max: 1, step: 0.01 })

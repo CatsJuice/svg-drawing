@@ -136,31 +136,59 @@ function getSvg(options: SvgReplayOptions = {}) {
     speed = 500,
     loop = false,
     easing = 'ease',
+    loopInterval = 1000,
+    wipe = 500,
   } = options
 
-  const lengths = lines.value.map(line => lineLength(line))
-  const totalLength = lengths.reduce((sum, length) => sum + length, 0)
-  const totalDuration = Number((totalLength / speed).toFixed(2))
-  let lastPercent = 0
+  const lineLengths = lines.value.map(line => lineLength(line))
+  const totalLength = lineLengths.reduce((sum, length) => sum + length, 0)
+  const drawDuration = (totalLength / speed) * 1000
+  const delayDuration = loopInterval ?? 0
+  const wipeDuration = wipe ?? 0
+  const totalDuration = drawDuration + delayDuration + wipeDuration
+
+  const lineDurations: number[] = []
+  const lineDelays: number[] = []
+  const lineDelayReverse: number[] = []
+  let delay = 0
+  for (const line of lines.value) {
+    const length = lineLength(line)
+    const duration = length / speed * 1000
+    lineDurations.push(duration)
+    lineDelays.push(delay)
+    delay += duration
+  }
+  lines.value.forEach((_, i) => {
+    lineDelayReverse.push(
+      totalDuration - wipeDuration - (lineDelays[i] / drawDuration * wipeDuration),
+    )
+  })
 
   const styles = lines.value.map((_, i) => {
-    const length = Number(lengths[i].toFixed(0))
-    const percent = length / totalLength * 100
-    const newPercent = Number((lastPercent + percent).toFixed(2))
+    const length = Number(lineLengths[i].toFixed(0))
+    const lineDrawDuration = lineDurations[i]
+    const lineDelayDuration = lineDelays[i]
+    const lineDelayReverseDuration = lineDelayReverse[i]
+    const startDrawPercent = lineDelayDuration / totalDuration * 100
+    const stopDrawPercent = (lineDelayDuration + lineDrawDuration) / totalDuration * 100
+    const wipeStartPercent = lineDelayReverseDuration / totalDuration * 100
+    const wipeStopPercent = (lineDelayReverseDuration + lineDrawDuration / drawDuration * wipeDuration) / totalDuration * 100
     const styleArr = [
       `path.line-${i} {`,
       tab(`stroke-dasharray: ${length} ${length + 5};`),
       tab(`stroke-dashoffset: ${length};`),
-      tab(`animation: draw-${i} ${totalDuration}s ${easing} forwards ${loop ? 'infinite' : ''};`),
+      tab(`animation: draw-${i} ${totalDuration}ms ${easing} forwards ${loop ? 'infinite' : ''};`),
       '}',
       `@keyframes draw-${i} {`,
       tab(`0% { stroke-dashoffset: ${length}; }`),
-      lastPercent === 0 ? null : tab(`${lastPercent}% { stroke-dashoffset: ${length}; }`),
-      newPercent === 100 ? null : tab(`${newPercent}% { stroke-dashoffset: 0; }`),
-      tab('100% { stroke-dashoffset: 0; }'),
+      startDrawPercent === 0 ? null : tab(`${startDrawPercent}% { stroke-dashoffset: ${length}; }`),
+      tab(`${stopDrawPercent.toFixed(2)}% { stroke-dashoffset: 0; }`),
+      tab(`${wipeStartPercent.toFixed(2)}% { stroke-dashoffset: 0; }`),
+      wipe ? tab(`${wipeStopPercent.toFixed(2)}% { stroke-dashoffset: ${length}; }`) : null,
+      tab(`100% { stroke-dashoffset: ${wipe ? length : 0}; }`),
       '}',
     ].filter(Boolean)
-    lastPercent = newPercent
+    // lastPercent = newPercent
     return styleArr.join('\n')
   })
   const styleTag = `<style>\n${styles.join('\n')}\n</style>`

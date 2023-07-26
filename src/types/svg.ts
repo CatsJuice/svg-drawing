@@ -7,6 +7,8 @@ export interface SvgReplayOptions {
   speed?: number
   loop?: boolean
   easing?: string
+  wipe?: number
+  loopInterval?: number
 }
 
 export interface DrawOptions {

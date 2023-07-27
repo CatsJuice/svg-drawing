@@ -28,7 +28,7 @@ export function svgCode2Url(svgCode: string) {
 export function tag(tagName: string, props: Record<string, any>, children?: any[]) {
   return [
   `<${tagName} ${Object.entries(props).map(([k, v]) => `${k}="${v}"`).join(' ')}>`,
-  `${children ? children.join('') : ''}`,
+  `${children ? children.filter(Boolean).join('') : ''}`,
   `</${tagName}>`,
   ].join('\n')
 }

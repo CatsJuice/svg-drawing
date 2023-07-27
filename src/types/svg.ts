@@ -17,4 +17,6 @@ export interface DrawOptions {
   strokeWidth?: number
 }
 
-export type BrushOptions = Parameters<typeof getStroke>[1]
+export type BrushOptions = Parameters<typeof getStroke>[1] & {
+  disable?: boolean
+}

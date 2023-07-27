@@ -145,6 +145,7 @@ function debugPane() {
     </ClientOnly>
     <SvgPreviewer
       v-if="svg"
+      :open-on-mount="!!shared"
       :svg-code="svg"
     />
 

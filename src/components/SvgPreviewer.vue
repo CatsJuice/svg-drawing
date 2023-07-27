@@ -5,8 +5,9 @@ import { download, svgCode2Url } from '~/utils/helper'
 
 interface Props {
   svgCode: string
+  openOnMount?: boolean
 }
-withDefaults(defineProps<Props>(), {})
+const props = withDefaults(defineProps<Props>(), {})
 
 const minGap = 20
 const $el = ref<HTMLElement>()
@@ -32,6 +33,9 @@ onMounted(() => {
     else if (hovered.value)
       preview()
   })
+
+  if (props.openOnMount)
+    preview()
 })
 
 useEventListener('resize', () => {

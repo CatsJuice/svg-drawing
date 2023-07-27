@@ -36,6 +36,7 @@ const replayOptions: SvgReplayOptions = reactive({
   ...initialReplayOptions,
 })
 const brushOptions: BrushOptions = reactive(merge({
+  disable: false,
   // to make sure that mask matches the path
   smoothing: 0,
   streamline: 0,
@@ -103,6 +104,7 @@ function debugPane() {
   replayPane.addInput(replayOptions, 'wipe', { label: 'Wipe', min: 0, max: 5000, step: 100 })
 
   const brushPane = pane.addFolder({ title: 'Brush Options', expanded: false })
+  brushPane.addInput(brushOptions!, 'disable', { label: 'Disable' })
   brushPane.addInput(brushOptions!, 'thinning', { label: 'Thinning', min: 0, max: 1, step: 0.01 })
   brushPane.addInput(brushOptions!.start!, 'taper', { label: 'Start Taper', min: 0, max: 100, step: 1 })
   brushPane.addInput(brushOptions!.end!, 'taper', { label: 'End Taper', min: 0, max: 100, step: 1 })

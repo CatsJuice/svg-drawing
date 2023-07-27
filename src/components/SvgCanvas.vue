@@ -76,6 +76,7 @@ watch([
   () => props.drawOptions,
   () => props.width,
   () => props.height,
+  () => props.brushOptions?.disable,
 ], submitSvg, { deep: true })
 
 const onMousedown = (e: MouseEvent) => onDrawStart({ x: e.clientX, y: e.clientY })
@@ -203,13 +204,15 @@ function getSvg(options: SvgReplayOptions = {}) {
       ...p,
       class: `line-${i}`,
     }))),
-    tag('mask', { id: 'brush' }, [
-      tag('rect', { x: 0, y: 0, width: '100%', height: '100%', fill: 'black' }),
-      ...brushworkLines.value.map(p => tag('path', {
-        ...p,
-        fill: 'white',
-      })),
-    ]),
+    props.brushOptions?.disable
+      ? null
+      : tag('mask', { id: 'brush' }, [
+        tag('rect', { x: 0, y: 0, width: '100%', height: '100%', fill: 'black' }),
+        ...brushworkLines.value.map(p => tag('path', {
+          ...p,
+          fill: 'white',
+        })),
+      ]),
   ])
 }
 function brushworkLine(line: Line) {
@@ -242,7 +245,7 @@ defineExpose({
       <g mask="url(#brush)">
         <path v-for="(p, i) in paths" :key="i" v-bind="p" />
       </g>
-      <mask id="brush">
+      <mask v-if="!brushOptions?.disable" id="brush">
         <rect x="0" y="0" width="100%" height="100%" fill="black" />
         <path v-for="(p, i) in brushworkLines" :key="i" fill="white" v-bind="p" />
       </mask>

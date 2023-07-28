@@ -18,9 +18,12 @@ A simple canvas to draw lines and replay rendered as SVG, can be exported as SVG
 
 # Problems
 
-- Share limit
+- **Share limit**
+  
   The share link contains all points that you draw, because of the limitation of url length(may be different with browsers), the share info maybe lost, and info cannot be parsed.
-- Rendering problems at line intersections.
+
+- **Rendering problems at line intersections.**
+  
   When brushwork enabled, it will use mask to implement the effect ( which is inspired by [AntFu](https://github.com/antfu)'s [Animated SVG Logo](https://antfu.me/posts/animated-svg-logo) ). So this problem is hard to resolve for now.
 
 # Roadmap
@@ -50,3 +53,5 @@ A simple canvas to draw lines and replay rendered as SVG, can be exported as SVG
 - [ ] <span style="text-decoration: line-through">Import & Export</span>
 - [x] Share url
 - [ ] Copy svg base64
+- [ ] Realistic pressure
+  - See https://pressurejs.com/

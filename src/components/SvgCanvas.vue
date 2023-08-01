@@ -143,37 +143,44 @@ function getSvg(options: SvgReplayOptions = {}) {
 
   const lineLengths = lines.value.map(line => lineLength(line))
   const totalLength = lineLengths.reduce((sum, length) => sum + length, 0)
+
+  // durations
   const drawDuration = (totalLength / speed) * 1000
-  const delayDuration = loopInterval ?? 0
+  const holdDuration = loopInterval ?? 0
   const wipeDuration = wipe ?? 0
-  const totalDuration = drawDuration + delayDuration + wipeDuration
+  const totalDuration = drawDuration + holdDuration + wipeDuration
 
   const lineDurations: number[] = []
+  const lineWipeDurations: number[] = []
   const lineDelays: number[] = []
-  const lineDelayReverse: number[] = []
+  const lineWipeDelays: number[] = []
   let delay = 0
-  for (const line of lines.value) {
-    const length = lineLength(line)
+  lines.value.forEach((_, index) => {
+    const length = lineLengths[index]
     const duration = length / speed * 1000
     lineDurations.push(duration)
+    lineWipeDurations.push(duration / drawDuration * wipeDuration)
     lineDelays.push(delay)
     delay += duration
-  }
+  })
+  let wipeDelay = 0
   lines.value.forEach((_, i) => {
-    lineDelayReverse.push(
-      totalDuration - wipeDuration - (lineDelays[i] / drawDuration * wipeDuration),
-    )
+    const ri = lines.value.length - i - 1
+    const length = lineLengths[ri]
+    const percent = length / totalLength
+    lineWipeDelays.unshift(drawDuration + holdDuration + wipeDelay)
+    wipeDelay += (percent * wipeDuration) * 0.8
   })
 
   const styles = lines.value.map((_, i) => {
     const length = Number(lineLengths[i].toFixed(0))
     const lineDrawDuration = lineDurations[i]
     const lineDelayDuration = lineDelays[i]
-    const lineDelayReverseDuration = lineDelayReverse[i]
     const startDrawPercent = lineDelayDuration / totalDuration * 100
     const stopDrawPercent = (lineDelayDuration + lineDrawDuration) / totalDuration * 100
-    const wipeStartPercent = lineDelayReverseDuration / totalDuration * 100
-    const wipeStopPercent = (lineDelayReverseDuration + lineDrawDuration / drawDuration * wipeDuration) / totalDuration * 100
+    const wipeStartPercent = lineWipeDelays[i] / totalDuration * 100
+    const wipeStopPercent = (lineWipeDelays[i] + lineWipeDurations[i]) / totalDuration * 100
+
     const styleArr = [
       `path.line-${i} {`,
       tab(`stroke-dasharray: ${length} ${length + 5};`),

@@ -141,6 +141,37 @@ function getSvg(options: SvgReplayOptions = {}) {
     wipe = 500,
   } = options
 
+  /**
+   *
+   *       timeline
+   *         ↑
+   *         ⎮
+   *         ⎮
+   *         ⎮
+   *  line1: ⎮ =========                    ⎮                      ⎮             =======⎮
+   *         ⎮ lineDurations[0]             ⎮                      ⎮         lineWipe[0]⎮
+   *  line2: ⎮          =====               ⎮                      ⎮         ====       ⎮
+   *         ⎮          lineDurations[1]    ⎮                      ⎮         lineWipe[1]⎮
+   *  line3: ⎮               ===============⎮                      ⎮=========           ⎮
+   *         ⎮              lineDurations[2]⎮                      ⎮lineWipe[2]         ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *       0 ⎮──────────--------------------⎮----------------------⎮--------------------⎮-------------->
+   *         ⎮                              ⎮                      ⎮                    ⎮             time/s
+   *         ⎮            Draw              ⎮         Hold         ⎮        Wipe        ⎮
+   *         ⎮                              ⎮                      ⎮                    ⎮
+   *         ⎮ - - - - drawDuration - - - - ⎮ - - holdDuration - - ⎮ -- wipeDuration -- ⎮
+   *         ⎮                                                                          ⎮
+   *         ⎮- • - - • - - • - - • - - • - totalDuration - • - - • - - • - - • - - • - ⎮
+   */
+
   const lineLengths = lines.value.map(line => lineLength(line))
   const totalLength = lineLengths.reduce((sum, length) => sum + length, 0)
 

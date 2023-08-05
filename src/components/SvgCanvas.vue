@@ -169,7 +169,7 @@ function getSvg(options: SvgReplayOptions = {}) {
    *         ⎮                              ⎮                      ⎮                    ⎮
    *         ⎮ - - - - drawDuration - - - - ⎮ - - holdDuration - - ⎮ -- wipeDuration -- ⎮
    *         ⎮                                                                          ⎮
-   *         ⎮- • - - • - - • - - • - - • - totalDuration - • - - • - - • - - • - - • - ⎮
+   *         ⎮• • • • • • • • • • • • • • • totalDuration • • • • • • • • • • • • • • • ⎮
    */
 
   const lineLengths = lines.value.map(line => lineLength(line))

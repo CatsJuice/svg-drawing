@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { getStroke } from 'perfect-freehand'
+import * as d3 from 'd3'
 
 // @ts-expect-error - no types
 import Mousetrap from 'mousetrap'
-import { lineLength, tab, tag } from '../utils/helper'
+import { distance, lineLength, tab, tag } from '../utils/helper'
 import type { BrushOptions, DrawOptions, Line, SvgReplayOptions } from '../types/svg'
 
 interface Position {
@@ -58,7 +59,9 @@ const bgRectAttrs = computed(() => ({
 const paths = computed(() => lines.value.map(line => ({
   'd': line.length === 1
     ? `M${line[0].join(' ')}L${line[0].join(' ')}`
-    : `M${line.map(p => p.join(',')).join('L')}`,
+    : props.drawOptions?.smooth
+      ? curve(line)
+      : `M${line.map(p => p.join(',')).join('L')}`,
   'stroke-width': props.drawOptions?.strokeWidth ?? '5',
   'stroke-linecap': 'round',
   'stroke-linejoin': 'round',
@@ -66,7 +69,10 @@ const paths = computed(() => lines.value.map(line => ({
   'fill': 'none',
 } as any)))
 const brushworkLines = computed(() => lines.value.map((line) => {
-  const points = getStroke(line, props.brushOptions)
+  const points = getStroke(line, {
+    ...props.brushOptions,
+    smoothing: (props.drawOptions?.smooth ?? 0.5) * 0.2,
+  })
   const d = `M${points.map(p => p.map(v => v.toFixed(2)).join(',')).join('L')}Z`
   return { d }
 }))
@@ -85,6 +91,27 @@ const onMouseup = (_: MouseEvent) => onDrawEnd()
 const onTouchStart = (e: TouchEvent) => onDrawStart({ x: e.touches[0].clientX, y: e.touches[0].clientY })
 const onTouchMove = (e: TouchEvent) => onDraw({ x: e.touches[0].clientX, y: e.touches[0].clientY })
 const onTouchEnd = (_: TouchEvent) => onDrawEnd()
+
+function curve(line: number[][]) {
+  const {
+    smooth = 0.5,
+  } = props.drawOptions!
+  const points: number[][] = []
+  let prevPoint: number[] | null = null
+  line.forEach((point, index) => {
+    if (!prevPoint) {
+      prevPoint = point
+      points.push(point)
+      return
+    }
+    const len = distance(prevPoint, point)
+    if (len < 10 * 2 * smooth && index !== line.length - 1)
+      return
+    prevPoint = point
+    points.push(point)
+  })
+  return d3.line().curve(d3.curveBundle.beta(1))(points as [number, number][])
+}
 
 function undo() {
   _undo()

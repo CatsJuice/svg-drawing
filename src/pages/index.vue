@@ -25,6 +25,7 @@ const drawOptions: DrawOptions = reactive({
   background: '#fff',
   color: '#000',
   strokeWidth: 10,
+  smooth: 0.2,
   ...initialDrawOptions,
 })
 const replayOptions: SvgReplayOptions = reactive({
@@ -86,6 +87,7 @@ function debugPane() {
   drawPane.addInput(drawOptions, 'background', { label: 'Background' })
   drawPane.addInput(drawOptions, 'color', { label: 'Color' })
   drawPane.addInput(drawOptions, 'strokeWidth', { label: 'Stroke Width', min: 1, max: 40 })
+  drawPane.addInput(drawOptions, 'smooth', { label: 'Stroke smooth', min: 0, max: 1, step: 0.01 })
 
   const replayPane = pane.addFolder({ title: 'Replay Options', expanded: false })
   replayPane.addInput(replayOptions, 'easing', {
@@ -112,7 +114,7 @@ function debugPane() {
   // experimental
   const brushExperimentalPane = brushPane.addFolder({ title: 'Experimental', expanded: false })
   brushExperimentalPane.addInput(brushOptions!, 'streamline', { label: 'Streamline', min: 0, max: 1, step: 0.01 })
-  brushExperimentalPane.addInput(brushOptions!, 'smoothing', { label: 'Smoothing', min: 0, max: 1, step: 0.01 })
+  // brushExperimentalPane.addInput(brushOptions!, 'smoothing', { label: 'Smoothing', min: 0, max: 1, step: 0.01 })
 }
 </script>
 

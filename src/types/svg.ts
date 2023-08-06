@@ -15,6 +15,7 @@ export interface DrawOptions {
   color?: string
   background?: string
   strokeWidth?: number
+  smooth?: number
 }
 
 export type BrushOptions = Parameters<typeof getStroke>[1] & {

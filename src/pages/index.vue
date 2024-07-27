@@ -60,7 +60,22 @@ const finalBrushOptions = computed(() => ({
 }))
 
 onMounted(() => {
+  initWidth()
+  debugPane()
+  window.addEventListener('resize', initWidth)
+})
+
+let _widthInitialized = false
+function initWidth() {
+  if (_widthInitialized)
+    return
   const { innerWidth, innerHeight } = window
+  if (!innerWidth || !innerHeight)
+    return
+
+  _widthInitialized = true
+  window.removeEventListener('resize', initWidth)
+
   if (canvasWidth.value > innerWidth + 20)
     canvasWidth.value = innerWidth - 20
   if (canvasHeight.value > innerHeight + 20)
@@ -70,9 +85,7 @@ onMounted(() => {
     width.value = shared.options.width
   if (shared?.options.height)
     height.value = shared.options.height
-
-  debugPane()
-})
+}
 
 function onShare(e: MouseEvent) {
   const url = createShareUrl(svgRef.value?.lines, { drawOptions, replayOptions, brushOptions, width: width.value, height: height.value })

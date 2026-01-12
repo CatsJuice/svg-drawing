@@ -7,6 +7,7 @@ import { createToast } from '../utils/toast'
 
 const SvgCanvas = defineAsyncComponent(() => import('../components/SvgCanvas.vue'))
 const ResizePan = defineAsyncComponent(() => import('../components/ResizePan.vue'))
+const StrokeHelper = defineAsyncComponent(() => import('../components/StrokeHelper.vue'))
 
 const { createShareUrl, parseShareInfo } = useShare()
 const { copy } = useClipboard()
@@ -229,6 +230,8 @@ function debugPane() {
         </div>
       </div>
     </Teleport>
+
+    <StrokeHelper />
   </div>
 </template>
 
